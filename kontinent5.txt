@@ -1,0 +1,12 @@
+Argentina.jpg : Argentina,
+Bolivija.jpg : Bolivija,
+Brazilija.jpg : Brazilija,
+Cile.jpg : Cile,
+Ekvador.jpg : Ekvador,
+Gvajana.jpg : Gvajana,
+Kolumbija.jpg : Kolumbija,
+Paragvaj.jpg : Paragvaj,
+Peru.jpg : Peru,
+Surinam.jpg : Surinam,
+Urugvaj.jpg : Urugvaj,
+Venezuela.jpg : Venezuela
