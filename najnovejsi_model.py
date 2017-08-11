@@ -6,10 +6,10 @@ celina = input('''Izberi celino. Na voljo so: Afrika, Avstralija
                     in Oceanija, Azija, Evropa, Juzna Amerika,
                     Severna in Srednja Amerika. ''')
 datoteka = None
-seznam_slik = []
-seznam_imen = []
-nakljucna_zastava = ""
-                        
+slovar_slik = {}
+stevilo_drzav = 0
+
+                      
 def pot_do_slik(celina):
     if celina == "Afrika":
         os.chdir("C:/Users/MMArgerita/zastave/slike_zastav/Afrika")
@@ -23,6 +23,11 @@ def pot_do_slik(celina):
         os.chdir("C:/Users/MMArgerita/zastave/slike_zastav/Juzna_Amerika")
     elif celina == "Severna in Srednja Amerika":
         os.chdir("C:/Users/MMArgerita/zastave/slike_zastav/Severna_in_Srednja_Amerika")
+    kje = os.getcwd()
+    return kje
+
+def pot_do_datotek():
+    os.chdir("C:/Users/MMArgerita/zastave")
     kje = os.getcwd()
     return kje
 
@@ -42,55 +47,104 @@ def izbira_datoteke(celina):
         datoteka = "kontinent6.txt"
     return datoteka
 
-def naredi_seznam_slik():
+def naredi_slovar_slik():
     izbira_datoteke(celina)
-    global seznam_slik
+    global slovar_slik
     with open(datoteka) as dat:
         for vrstica in dat:
-            besede = vrstica.strip().split(":")
-            if len(besede) == 2:
-                slika = besede[0]
-                seznam_slik.append(slika)
-    return seznam_slik
+            besedi = vrstica.strip().split(":")
+            if len(besedi) == 2:
+                slika = besedi[0]
+                ime_slike = besedi[1]
+                slovar_slik[slika] = ime_slike
+    return slovar_slik
 
-def naredi_seznam_imen():
-    izbira_datoteke(celina)
-    global seznam_imen
-    with open(datoteka) as dat:
-        for vrstica in dat:
-            besede = vrstica.strip().split(":")
-            if len(besede) == 2:
-                ime = besede[1]
-                seznam_imen.append(ime)
-    return seznam_imen
+
 
 def prikaz_slike():
-    naredi_seznam_slik()
+    naredi_slovar_slik()
     global nakljucna_zastava
 
-    nakljucna_zastava = random.choice(seznam_slik)
+    nakljucna_zastava = random.choice(list(slovar_slik.items()))
     print(nakljucna_zastava)
 
     pot_do_slik(celina)
     
-    im = Image.open(nakljucna_zastava)
+    im = Image.open(nakljucna_zastava[0])
     im.show()
 
+    pot_do_datotek()
+    
+def dolzina_datotek():
+    global stevilo_drzav
+    if celina == "Afrika":
+        stevilo_drzav = 54
+    elif celina == "Avstralija in Oceanija":
+        stevilo_drzav = 16
+    elif celina == "Azija":
+        stevilo_drzav = 46
+    elif celina == "Severna in Srednja Amerika":
+        stevilo_drzav = 24
+    elif celina == "Evropa":
+        stevilo_drzav = 46
+    elif celina == "Juzna Amerika":
+        stevilo_drzav = 12
+    else:
+        stevilo_drzav = 0
+    return stevilo_drzav
+
+        
 def vprasanje():
     print("Kateri državi pripada ta zastava?")
-    naredi_seznam_imen()
-    print(seznam_imen)
     prikaz_slike()
+    print(len(slovar_slik))
     
     global nakljucna_zastava
     
-    razdeljeno_ime = nakljucna_zastava.split(".")
-    print(razdeljeno_ime)
-    pravilen_odgovor = razdeljeno_ime[0]
+    
+    pravilen_odgovor = nakljucna_zastava[1]
     print(pravilen_odgovor)
 
+    #nov slovar, kjer ni pravilne rešitve. Iz njega izbiramo moznosti
+    #za odgovore
+    nov_slovar = {}
+    del slovar_slik[nakljucna_zastava[0]]
+    nov_slovar = slovar_slik
     
 
 
-    return True
+    moznosti = {}
+    global stevilo_drzav
+    dolzina_datotek()
     
+    while len(nov_slovar) > stevilo_drzav - 4:
+        prva_moznost = random.choice(list(nov_slovar.items()))
+        moznosti[prva_moznost[0]] = prva_moznost[1]
+        del nov_slovar[prva_moznost[0]]
+        
+    
+    moznosti[nakljucna_zastava[0]] = nakljucna_zastava[1]
+    mozni_odgovori = list(moznosti.items())
+    
+    prvi_odgovor = mozni_odgovori[0]
+    drugi_odgovor = mozni_odgovori[1]
+    tretji_odgovor = mozni_odgovori[2]
+    cetrti_odgovor = mozni_odgovori[3]
+    
+    odgovor_a = prvi_odgovor[1]
+    odgovor_b = drugi_odgovor[1]
+    odgovor_c = tretji_odgovor[1]
+    odgovor_d = cetrti_odgovor[1]
+    
+    print("Izberi enega izmed odgovorov.")
+    print("A) {}".format(odgovor_a))
+    print("B) {}".format(odgovor_b))
+    print("C) {}".format(odgovor_c))
+    print("D) {}".format(odgovor_d))
+    
+    odgovor = input("Vpiši svojo izbiro. ")
+    if odgovor == pravilen_odgovor:
+        print("Bravo!")
+    else:
+        print("Napačno. Pravilen odgovor je {}.".format(pravilen_odgovor))
+        
