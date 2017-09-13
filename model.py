@@ -67,6 +67,7 @@ class Celina:
     
     #prikaze sliko
     def prikaz_slike(self):
+        
         test1 = self.preveri()
         self.pot_do_slik()
 
@@ -86,7 +87,7 @@ class Celina:
             return False
         kljuc = random.choice(self.kljuci_na_voljo)
         self.nakljucna_zastava = (kljuc, self.slovar_slik[kljuc])
-        print(self.nakljucna_zastava)
+        
         del self.kljuci_na_voljo[self.kljuci_na_voljo.index(kljuc)]
         return self.nakljucna_zastava
     
